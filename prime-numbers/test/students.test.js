@@ -1,37 +1,70 @@
 'use strict';
 
+var express = require('express');
+var app = express();
 var chai = require('chai');
 var assert = chai.assert;
 
-var studentController = require('../controllers/students.controller.js')
+var httpMocks = require('node-mocks-http');
 
-describe('Testing Student model', function () {
+console.log('TEST before world ');
+var mongoose = require('mongoose');
+var mockgoose = require('mockgoose');
+mockgoose(mongoose);
+console.log('TEST after mockgoose ');
+
+var fixtures = require('pow-mongoose-fixtures');
+console.log('TEST after lading pow ');
+
+var studentController = require('../controllers/students.controller.js');
+var Student = require('../models/student.model');
+
+// var studentFixtures = require('./fixtures/students');
+
+mongoose.connect('mongodb://yusifibrahimov:6701995y@ds037244.mongolab.com:37244/student_db');
+// var Schema = mongoose.Schema;
+
+// var studentSchema = new Schema ({
+// 	firstname: String,
+// 	lastname: String,
+// 	email: String,
+// 	studentId: Number
+// });
+
+
+
+
+describe.only('Testing Student model', function () {
+
+	beforeEach(function(done) {
+		
+		console.log('TEST before fixtures loaded ');
+		fixtures.load({
+		    Student: {
+		        user1: { name: 'Yusif' },
+		        user2: { name: 'Anar' }
+		    }
+		});
+		done();
+	});
 
 	describe('student registration', function() {
 
 		it ('should save succesuflly - controller way', function() {
 
 			// setup 
-			var inputRequest = {
-				body: {
+			var inputRequest = httpMocks.createRequest({
+				method: 'POST',
+        		url: '/api/students',
+        		body: {
 					firstName: 'Yusif',
 					lastName: 'Ibrahimov',
 					email: 'yusifi@gmail.com'
 				}
-			};
+			});
 
-			var inputResponse = (function () {
-				var resData;
+			var inputResponse = httpMocks.createResponse();
 
-				return {
-					json: function (data) {
-						resData = data;
-					},
-					data: function () {
-						return resData;
-					}
-				}
-			})();
 			var next = function (err, data) {
 				if (err) {
 					assert.fail('Error occured in registration', err);
@@ -50,8 +83,14 @@ describe('Testing Student model', function () {
 			studentController.register(inputRequest, inputResponse, next);
 
 			// validation
-			var actual = inputResponse.data();
+			var actual = JSON.parse( inputResponse._getData() );
 			assert.deepEqual(actual, expected, 'The student is not equal');	
+
+			Student.find({ firstName: 'Yusif' }, function (err, student) {
+				should.not.exist(err);
+				assert.deepEqual(student, expected);		
+
+			})
 			
 			// terndown / destoy
 			
@@ -73,7 +112,7 @@ describe('Testing Student model', function () {
 				body: {
 					firstName: 'Yusif',
 					lastName: 'Ibrahimov',
-					email: 'yusif@igmail.com'
+					email: 'yusif@igmailcom'
 				}
 			}
 
@@ -106,6 +145,24 @@ describe('Testing Student model', function () {
 			//execution
 			studentController.register(inputRequest, inputResponse, next);
 		});
+
+
+		it ('Should get all the students succesuflly', function() {
+
+			var inputRequest = {
+				body: {
+
+				}
+			};
+		});	
+
+
+
 	})
 	
+});
+
+
+app.listen(3000, function(){
+	console.log('server started on port 3000');
 });
