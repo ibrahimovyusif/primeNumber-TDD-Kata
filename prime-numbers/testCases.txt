@@ -1,0 +1,44 @@
+GIVEN a valid student WHEN registrating THEN should save successfully.
+
+GIVEN an invalid student email WHEN registrating THEN should error occured.
+
+GIVEN a used(chosen) student email WHEN registrating THEN should error occured.
+
+GIVEN valid student id's WHEN getting all students from database THEN should recieve successfully.
+
+GIVEN a valid student id WHEN getting student from database by details THEN should recieve successfully.
+
+GIVEN an invalid student id WHEN getting student from database by details THEN should error occured.
+
+GIVEN valid teacher id's WHEN getting all teachers from database THEN should recieve successfully.
+
+GIVEN a valid teacher id WHEN getting teacher from database by details THEN should recieve successfully.
+
+GIVEN an invalid teacher id WHEN getting teacher from database by details THEN should error occured.
+
+GIVEN valid subject id's WHEN getting all subject from database THEN should recieve successfully.
+
+GIVEN a valid subject id WHEN getting subject from database by details THEN should recieve successfully.
+
+GIVEN an invalid subject id WHEN getting subject from database by details THEN should error occured.
+
+GIVEN a valid subject id WHEN registering classes THEN should be registered successfully.
+
+GIVEN an invalid subject id WHEN registering classes THEN should error occured.
+
+GIVEN a subject id which is chosen by the same student WHEN registering classes THEN should error occured.
+
+GIVEN a valid student WHEN editing students THEN should be updated successfully.
+
+GIVEN an invalid student email WHEN editing students THEN should error occured.
+
+GIVEN email is chosen by other students WHEN editing students THEN should error occured.
+
+GIVEN a valid student WHEN deleting student from database THEN should drop succesfully.
+
+GIVEN a valid subject id WHEN dropping the subject from student database THEN should drop succesfully.
+
+GIVEN an invalid subject id WHEN dropping the subject from student database THEN should error occured.
+
+GIVEN an subject id which is not chosen by student WHEN dropping the subject from student database THEN should error occured.
+

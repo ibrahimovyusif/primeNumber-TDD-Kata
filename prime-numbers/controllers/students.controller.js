@@ -26,6 +26,25 @@ exports.register =  function (req, res, next) {
 }
 
 
+
+
+exports.view =  function (req, res, next) {
+	var student = req.body;
+
+	// validate here
+
+
+	// generate student id
+	var studentId = generateNewStudentId();
+	student.studentId = studentId;
+
+	// save student 
+	return res.json(student);
+}
+
+
+
+
 function generateNewStudentId() {
 	return lastStudentIdStatic = lastStudentIdStatic + 1;
 }
